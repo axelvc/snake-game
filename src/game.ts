@@ -1,6 +1,6 @@
 import { Snake } from './snake.js'
 import { Fruit } from './fruit.js'
-import { Canvas } from './canvas.js'
+import { Canvas, CanvasSizes } from './canvas.js'
 import { Controls } from './controls.js'
 
 export interface CellPosition {
@@ -8,27 +8,16 @@ export interface CellPosition {
   y: number
 }
 
-export interface GameSizes {
-  cell: number
-  columns: number
-  rows: number
-}
-
 export interface GameElement {
   position: CellPosition[] | CellPosition | null
-  updatePosition(sizes: GameSizes): void
-  reset(sizes: GameSizes): void
+  updatePosition(sizes: CanvasSizes): void
+  reset(sizes: CanvasSizes): void
 }
 
 export class Game {
-  gameSizes: GameSizes = {
-    cell: 25,
-    columns: 20,
-    rows: 20,
-  }
   snake: Snake = new Snake()
   fruit: Fruit = new Fruit()
-  canvas: Canvas = new Canvas(this.gameSizes)
+  canvas: Canvas = new Canvas({ cell: 25, columns: 21, rows: 21 })
   controls: Controls = new Controls()
 
   constructor() {
@@ -46,8 +35,11 @@ export class Game {
     this.controls.addObserver(this.snake)
 
     // Set initial position of the snake and the fruit
-    this.snake.reset(this.gameSizes)
+    this.snake.reset(this.canvas.sizes)
     this.fruit.reset()
+
+    // Print canvas
+    this.canvas.print(this.snake.position, this.fruit.position)
   }
 }
 

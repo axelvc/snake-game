@@ -1,11 +1,12 @@
+import { CanvasSizes } from './canvas'
 import { ControlsObserver, keyDirection } from './controls'
-import { CellPosition, GameElement, GameSizes } from './game'
+import { CellPosition, GameElement } from './game'
 
 export class Snake implements GameElement, ControlsObserver {
   private direction: keyDirection | null = null
   position: CellPosition[] = []
 
-  private getNewPosition({ cell }: GameSizes): CellPosition {
+  private getNewPosition({ cell }: CanvasSizes): CellPosition {
     const snakeHead = this.position[0]
 
     switch (this.direction) {
@@ -26,7 +27,7 @@ export class Snake implements GameElement, ControlsObserver {
     return snakeHead
   }
 
-  reset({ cell, columns, rows }: GameSizes) {
+  reset({ cell, columns, rows }: CanvasSizes) {
     // Set snake in the center
     this.position = [
       {
@@ -36,11 +37,9 @@ export class Snake implements GameElement, ControlsObserver {
     ]
   }
 
-  updatePosition(sizes: GameSizes) {
+  updatePosition(sizes: CanvasSizes) {
     this.position.unshift(this.getNewPosition(sizes))
     this.position.pop()
-
-    console.table(this.position)
   }
 
   updateDirection(direction: keyDirection) {
