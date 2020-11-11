@@ -40,13 +40,13 @@ export class Canvas {
   }
 
   private drawSnake(position: CellPosition[]) {
-    // Draw snake head
-    this.drawCell(position[0], this.colors.snakeHead)
-
     // Draw snake body
     for (const cell of position.slice(1)) {
       this.drawCell(cell, this.colors.snakeBody)
     }
+
+    // Draw snake head
+    this.drawCell(position[0], this.colors.snakeHead)
   }
 
   private drawFruit(position: CellPosition | null) {
@@ -57,8 +57,8 @@ export class Canvas {
 
   print(snakePosition: CellPosition[], fruitPosition: CellPosition | null) {
     this.clean()
-    this.drawSnake(snakePosition)
     this.drawFruit(fruitPosition)
+    this.drawSnake(snakePosition)
   }
 
   isFull(cellsCount: number) {
