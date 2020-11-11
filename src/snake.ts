@@ -1,5 +1,5 @@
-import { CanvasSizes } from './canvas'
-import { ControlsObserver, keyDirection } from './controls'
+import { CanvasSizes } from './canvas.js'
+import { ControlsObserver, keyDirection } from './controls.js'
 import { CellPosition, GameElement, compareCells } from './game.js'
 
 export class Snake implements GameElement, ControlsObserver {

@@ -1,6 +1,5 @@
-import { CanvasSizes } from './canvas'
-import { GameElement } from './game'
-import { CellPosition, compareCells } from './game.js'
+import { CanvasSizes } from './canvas.js'
+import { CellPosition, compareCells, GameElement } from './game.js'
 
 export class Fruit implements GameElement {
   position: CellPosition | null = null
