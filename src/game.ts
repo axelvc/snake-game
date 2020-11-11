@@ -14,6 +14,11 @@ export interface GameSizes {
   rows: number
 }
 
+export interface GameElement {
+  updatePosition(sizes: GameSizes): void
+  reset(sizes: GameSizes): void
+}
+
 export class Game {
   gameSizes: GameSizes = {
     cell: 25,
@@ -26,6 +31,7 @@ export class Game {
   controls: Controls = new Controls()
 
   constructor() {
+    // Set keymaps
     this.controls.addKeymap({
       up: 'ArrowUp',
       right: 'ArrowRight',
@@ -34,6 +40,12 @@ export class Game {
     })
     this.controls.addKeymap({ up: 'k', right: 'l', down: 'j', left: 'h' })
     this.controls.addKeymap({ up: 'w', right: 'd', down: 's', left: 'a' })
+
+    // Add the snake to watch the controls changes
+    this.controls.addObserver(this.snake)
+
+    // Set initial position of the snake
+    this.snake.reset(this.gameSizes)
   }
 }
 

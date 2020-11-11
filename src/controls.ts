@@ -1,11 +1,11 @@
-type keyDirection = 'up' | 'right' | 'down' | 'left'
-
-type keymap = {
-  [key in keyDirection]: string
-}
+export type keyDirection = 'up' | 'right' | 'down' | 'left'
 
 export interface ControlsObserver {
   updateDirection(direction: keyDirection): void
+}
+
+type keymap = {
+  [key in keyDirection]: string
 }
 
 interface ControlsInterface {
