@@ -1,30 +1,51 @@
 import { CanvasSizes } from './canvas'
 import { ControlsObserver, keyDirection } from './controls'
-import { CellPosition, GameElement } from './game'
+import { CellPosition, GameElement, compareCells } from './game.js'
 
 export class Snake implements GameElement, ControlsObserver {
   private direction: keyDirection | null = null
   position: CellPosition[] = []
 
   private getNewPosition({ cell }: CanvasSizes): CellPosition {
-    const snakeHead = this.position[0]
+    let { x, y } = this.position[0]
 
     switch (this.direction) {
       case 'right':
-        snakeHead.x += cell
+        x += cell
         break
       case 'left':
-        snakeHead.x -= cell
+        x -= cell
         break
       case 'down':
-        snakeHead.y += cell
+        y += cell
         break
       default:
-        snakeHead.y -= cell
+        y -= cell
         break
     }
 
-    return snakeHead
+    return { x, y }
+  }
+
+  checkSelfCollision(): never | void {
+    const head = this.position[0]
+
+    const collision = this.position
+      .slice(1)
+      .some((cell) => compareCells(cell, head))
+
+    if (collision) {
+      throw new Error('Snake crashed into himself')
+    }
+  }
+
+  checkRangeCollision({ cell, columns, rows }: CanvasSizes): never | void {
+    const head = this.position[0]
+    const limits = [-cell, columns * cell, rows * cell]
+
+    if (limits.includes(head.x) || limits.includes(head.y)) {
+      throw new Error('Snake crashed with the wall')
+    }
   }
 
   reset({ cell, columns, rows }: CanvasSizes) {
@@ -37,12 +58,20 @@ export class Snake implements GameElement, ControlsObserver {
     ]
   }
 
-  updatePosition(sizes: CanvasSizes) {
+  updatePosition(sizes: CanvasSizes, fruitCollected: boolean) {
     this.position.unshift(this.getNewPosition(sizes))
-    this.position.pop()
+
+    if (!fruitCollected) {
+      this.position.pop()
+    }
   }
 
   onDirectionChange(direction: keyDirection) {
     this.direction = direction
+  }
+
+  checkCollision(sizes: CanvasSizes): never | void {
+    this.checkSelfCollision()
+    this.checkRangeCollision(sizes)
   }
 }

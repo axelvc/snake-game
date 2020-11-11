@@ -1,4 +1,4 @@
-import { CellPosition } from './_index'
+import { CellPosition } from './game'
 
 export interface CanvasSizes {
   cell: number

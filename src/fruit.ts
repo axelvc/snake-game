@@ -1,6 +1,6 @@
 import { CanvasSizes } from './canvas'
 import { GameElement } from './game'
-import { CellPosition } from './_index'
+import { CellPosition, compareCells } from './game.js'
 
 export class Fruit implements GameElement {
   position: CellPosition | null = null
@@ -9,10 +9,16 @@ export class Fruit implements GameElement {
     this.position = null
   }
 
-  updatePosition({ cell, columns, rows }: CanvasSizes) {
-    this.position = {
-      x: Math.floor(Math.random() * columns) * cell,
-      y: Math.floor(Math.random() * rows) * cell,
-    }
+  inSnakePosition(snakePositions: CellPosition[]) {
+    return snakePositions.some((cell) => compareCells(cell, this.position!))
+  }
+
+  updatePosition(sizes: CanvasSizes, snakePositions: CellPosition[]) {
+    do {
+      this.position = {
+        x: Math.floor(Math.random() * sizes.columns) * sizes.cell,
+        y: Math.floor(Math.random() * sizes.rows) * sizes.cell,
+      }
+    } while (this.inSnakePosition(snakePositions))
   }
 }

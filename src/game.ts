@@ -8,9 +8,13 @@ export interface CellPosition {
   y: number
 }
 
+export function compareCells(cell1: CellPosition, cell2: CellPosition) {
+  return cell1.x === cell2.x && cell1.y === cell2.y
+}
+
 export interface GameElement {
   position: CellPosition[] | CellPosition | null
-  updatePosition(sizes: CanvasSizes): void
+  updatePosition(sizes: CanvasSizes, ...params: any): void
   reset(sizes: CanvasSizes): void
 }
 
@@ -45,13 +49,20 @@ export class Game implements ControlsObserver {
   }
 
   updateGame() {
-    this.snake.updatePosition(this.canvas.sizes)
+    const fruitCollected = this.fruit.inSnakePosition(this.snake.position)
+
+    this.snake.updatePosition(this.canvas.sizes, fruitCollected)
+
+    if (fruitCollected) {
+      this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
+    }
+
     this.canvas.print(this.snake.position, this.fruit.position)
   }
 
   start() {
-    this.fruit.updatePosition(this.canvas.sizes)
-    this.gameId = setInterval(this.updateGame.bind(this), 60)
+    this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
+    this.gameId = setInterval(this.updateGame.bind(this), 90)
   }
 
   onDirectionChange() {
