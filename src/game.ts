@@ -80,7 +80,7 @@ export class Game implements ControlsObserver {
 
   start() {
     this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
-    this.gameId = setInterval(this.updateGame.bind(this), 300)
+    this.gameId = setInterval(this.updateGame.bind(this), 100)
   }
 
   onDirectionChange() {

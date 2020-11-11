@@ -16,7 +16,7 @@ interface ControlsInterface {
 export class Controls implements ControlsInterface {
   private observers: ControlsObserver[] = []
   private keymaps: keymap[] = []
-  direction: string | null = null
+  private direction: keyDirection | null = null
 
   constructor() {
     document.addEventListener('keydown', this.validateKey.bind(this))
@@ -32,13 +32,32 @@ export class Controls implements ControlsInterface {
     }
   }
 
+  private isStepBack(newDirection: keyDirection): boolean {
+    switch (this.direction) {
+      case 'right':
+        return newDirection === 'left'
+      case 'left':
+        return newDirection === 'right'
+      case 'down':
+        return newDirection === 'up'
+      case 'up':
+        return newDirection === 'down'
+      default:
+        return false
+    }
+  }
+
   private validateKey({ key }: KeyboardEvent) {
-    const direction: keyDirection | void = this.getKeyDirection(key)
+    const newDirection: keyDirection | void = this.getKeyDirection(key)
 
-    if (!direction) return
+    if (!newDirection) return
+    if (this.isStepBack(newDirection)) return
 
+    this.direction = newDirection
+
+    // Notify observers
     for (const observer of this.observers) {
-      observer.onDirectionChange(direction)
+      observer.onDirectionChange(this.direction)
     }
   }
 
