@@ -15,6 +15,7 @@ export interface GameSizes {
 }
 
 export interface GameElement {
+  position: CellPosition[] | CellPosition | null
   updatePosition(sizes: GameSizes): void
   reset(sizes: GameSizes): void
 }
@@ -44,8 +45,9 @@ export class Game {
     // Add the snake to watch the controls changes
     this.controls.addObserver(this.snake)
 
-    // Set initial position of the snake
+    // Set initial position of the snake and the fruit
     this.snake.reset(this.gameSizes)
+    this.fruit.reset()
   }
 }
 
