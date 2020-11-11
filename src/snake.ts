@@ -42,7 +42,7 @@ export class Snake implements GameElement, ControlsObserver {
     this.position.pop()
   }
 
-  updateDirection(direction: keyDirection) {
+  onDirectionChange(direction: keyDirection) {
     this.direction = direction
   }
 }

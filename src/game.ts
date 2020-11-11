@@ -1,7 +1,7 @@
 import { Snake } from './snake.js'
 import { Fruit } from './fruit.js'
 import { Canvas, CanvasSizes } from './canvas.js'
-import { Controls } from './controls.js'
+import { Controls, ControlsObserver } from './controls.js'
 
 export interface CellPosition {
   x: number
@@ -14,11 +14,12 @@ export interface GameElement {
   reset(sizes: CanvasSizes): void
 }
 
-export class Game {
+export class Game implements ControlsObserver {
   snake: Snake = new Snake()
   fruit: Fruit = new Fruit()
   canvas: Canvas = new Canvas({ cell: 25, columns: 21, rows: 21 })
   controls: Controls = new Controls()
+  gameId: number | null = null
 
   constructor() {
     // Set keymaps
@@ -31,8 +32,9 @@ export class Game {
     this.controls.addKeymap({ up: 'k', right: 'l', down: 'j', left: 'h' })
     this.controls.addKeymap({ up: 'w', right: 'd', down: 's', left: 'a' })
 
-    // Add the snake to watch the controls changes
+    // Add controls observers
     this.controls.addObserver(this.snake)
+    this.controls.addObserver(this)
 
     // Set initial position of the snake and the fruit
     this.snake.reset(this.canvas.sizes)
@@ -40,6 +42,21 @@ export class Game {
 
     // Print canvas
     this.canvas.print(this.snake.position, this.fruit.position)
+  }
+
+  updateGame() {
+    this.snake.updatePosition(this.canvas.sizes)
+    this.canvas.print(this.snake.position, this.fruit.position)
+  }
+
+  start() {
+    this.fruit.updatePosition(this.canvas.sizes)
+    this.gameId = setInterval(this.updateGame.bind(this), 60)
+  }
+
+  onDirectionChange() {
+    this.controls.removeObserver(this)
+    this.start()
   }
 }
 

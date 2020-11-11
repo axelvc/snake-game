@@ -1,7 +1,7 @@
 export type keyDirection = 'up' | 'right' | 'down' | 'left'
 
 export interface ControlsObserver {
-  updateDirection(direction: keyDirection): void
+  onDirectionChange(direction: keyDirection): void
 }
 
 type keymap = {
@@ -38,7 +38,7 @@ export class Controls implements ControlsInterface {
     if (!direction) return
 
     for (const observer of this.observers) {
-      observer.updateDirection(direction)
+      observer.onDirectionChange(direction)
     }
   }
 
@@ -48,5 +48,10 @@ export class Controls implements ControlsInterface {
 
   addObserver(observer: ControlsObserver) {
     this.observers.push(observer)
+  }
+
+  removeObserver(observer: ControlsObserver) {
+    const id = this.observers.findIndex((o) => o === observer)
+    this.observers.splice(id, 1)
   }
 }
