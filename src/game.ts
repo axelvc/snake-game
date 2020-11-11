@@ -59,6 +59,10 @@ export class Game implements ControlsObserver {
       this.stop()
     }
 
+    if (this.canvas.isFull(this.snake.position.length)) {
+      this.stop()
+    }
+
     if (fruitCollected) {
       this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
     }
