@@ -14,7 +14,7 @@ export interface GameSizes {
   rows: number
 }
 
-class Game {
+export class Game {
   gameSizes: GameSizes = {
     cell: 25,
     columns: 20,
@@ -23,19 +23,17 @@ class Game {
   snake: Snake = new Snake()
   fruit: Fruit = new Fruit()
   canvas: Canvas = new Canvas(this.gameSizes)
-  controls: Controls[]
+  controls: Controls = new Controls()
 
   constructor() {
-    this.controls = [
-      new Controls({
-        up: 'ArrowUp',
-        right: 'ArrowRight',
-        down: 'ArrowDown',
-        left: 'ArrowLeft',
-      }),
-      new Controls({ up: 'k', right: 'l', down: 'j', left: 'h' }),
-      new Controls({ up: 'w', right: 'd', down: 's', left: 'a' }),
-    ]
+    this.controls.addKeymap({
+      up: 'ArrowUp',
+      right: 'ArrowRight',
+      down: 'ArrowDown',
+      left: 'ArrowLeft',
+    })
+    this.controls.addKeymap({ up: 'k', right: 'l', down: 'j', left: 'h' })
+    this.controls.addKeymap({ up: 'w', right: 'd', down: 's', left: 'a' })
   }
 }
 
