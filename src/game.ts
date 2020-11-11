@@ -53,6 +53,12 @@ export class Game implements ControlsObserver {
 
     this.snake.updatePosition(this.canvas.sizes, fruitCollected)
 
+    try {
+      this.snake.checkCollision(this.canvas.sizes)
+    } catch {
+      this.stop()
+    }
+
     if (fruitCollected) {
       this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
     }
@@ -60,9 +66,21 @@ export class Game implements ControlsObserver {
     this.canvas.print(this.snake.position, this.fruit.position)
   }
 
+  stop() {
+    // Stop game
+    clearInterval(this.gameId!)
+    this.gameId = null
+
+    // Reset all
+    this.snake.reset(this.canvas.sizes)
+    this.fruit.reset()
+    this.canvas.print(this.snake.position, this.fruit.position)
+    this.controls.addObserver(this)
+  }
+
   start() {
     this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
-    this.gameId = setInterval(this.updateGame.bind(this), 90)
+    this.gameId = setInterval(this.updateGame.bind(this), 300)
   }
 
   onDirectionChange() {
