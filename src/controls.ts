@@ -32,26 +32,10 @@ export class Controls implements ControlsInterface {
     }
   }
 
-  private isStepBack(newDirection: keyDirection): boolean {
-    switch (this.direction) {
-      case 'right':
-        return newDirection === 'left'
-      case 'left':
-        return newDirection === 'right'
-      case 'down':
-        return newDirection === 'up'
-      case 'up':
-        return newDirection === 'down'
-      default:
-        return false
-    }
-  }
-
   private validateKey({ key }: KeyboardEvent) {
     const newDirection: keyDirection | void = this.getKeyDirection(key)
 
     if (!newDirection) return
-    if (this.isStepBack(newDirection)) return
 
     this.direction = newDirection
 

@@ -6,6 +6,21 @@ export class Snake implements GameElement, ControlsObserver {
   private direction: keyDirection | null = null
   position: CellPosition[] = []
 
+  private isStepBack(newDirection: keyDirection): boolean {
+    switch (this.direction) {
+      case 'right':
+        return newDirection === 'left'
+      case 'left':
+        return newDirection === 'right'
+      case 'down':
+        return newDirection === 'up'
+      case 'up':
+        return newDirection === 'down'
+      default:
+        return false
+    }
+  }
+
   private getNewPosition({ cell }: CanvasSizes): CellPosition {
     let { x, y } = this.position[0]
 
@@ -67,7 +82,9 @@ export class Snake implements GameElement, ControlsObserver {
   }
 
   onDirectionChange(direction: keyDirection) {
-    this.direction = direction
+    if (this.position.length === 1 || !this.isStepBack(direction)) {
+      this.direction = direction
+    }
   }
 
   checkCollision(sizes: CanvasSizes): never | void {
