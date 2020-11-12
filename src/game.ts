@@ -72,13 +72,12 @@ export class Game implements ControlsObserver {
     const bestScoreElement = document.getElementById('best-score')!
 
     // Update score
+    this.stats.current = score
     if (score > this.stats.best) {
       this.stats.best = score
     }
-    this.stats.current = score
 
     // Print new score
-    scoreElement.innerText = score.toString()
     scoreElement.innerText = score.toString()
     bestScoreElement.innerText = this.stats.best.toString()
   }
