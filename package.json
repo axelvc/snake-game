@@ -1,0 +1,16 @@
+{
+  "name": "snake-game",
+  "version": "1.0.0",
+  "description": "A simple snake game",
+  "author": "@axelvc <a.axelvc@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsc -w",
+    "dev:server": "http-server .",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.3",
+    "typescript": "^4.0.5"
+  }
+}
