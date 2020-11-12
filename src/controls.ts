@@ -37,6 +37,10 @@ export class Controls implements ControlsInterface {
 
     if (!newDirection) return
 
+    this.updateDirection(newDirection)
+  }
+
+  updateDirection(newDirection: keyDirection) {
     this.direction = newDirection
 
     // Notify observers

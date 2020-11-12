@@ -1,4 +1,4 @@
-import { Controls, ControlsObserver } from './controls.js'
+import { Controls, ControlsObserver, keyDirection } from './controls.js'
 import { Canvas, CanvasSizes } from './canvas.js'
 import { Snake } from './snake.js'
 import { Fruit } from './fruit.js'
@@ -44,6 +44,18 @@ export class Game implements ControlsObserver {
     this.controls.addObserver(this.snake)
     this.controls.addObserver(this)
 
+    // Listen virtual controls
+    const virtualControls: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
+      '#controls button',
+    )
+
+    virtualControls.forEach((button) => {
+      button.onclick = this.controls.updateDirection.bind(
+        this.controls,
+        button.id as keyDirection,
+      )
+    })
+
     // Set initial position of the snake and the fruit
     this.snake.reset(this.canvas.sizes)
     this.fruit.reset()
@@ -60,12 +72,13 @@ export class Game implements ControlsObserver {
     const bestScoreElement = document.getElementById('best-score')!
 
     // Update score
-    this.stats.current = score
     if (score > this.stats.best) {
       this.stats.best = score
     }
+    this.stats.current = score
 
     // Print new score
+    scoreElement.innerText = score.toString()
     scoreElement.innerText = score.toString()
     bestScoreElement.innerText = this.stats.best.toString()
   }
