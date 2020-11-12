@@ -15,15 +15,15 @@
     <div class="gameboy">
       <div class="gameboy__head">
         <canvas class="display" id="game"></canvas>
-        <div class="play-indicator"></div>
-        <div class="game-stats">
+        <div class="play-indicator" id="play-indicator"></div>
+        <div class="game-stats" id="stats">
           <p class="game-stats__score">
             Score
-            <span>0</span>
+            <span id="current-score">0</span>
           </p>
           <p class="game-stats__score">
             Best
-            <span>0</span>
+            <span id="best-score">0</span>
           </p>
         </div>
       </div>

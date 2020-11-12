@@ -1,7 +1,7 @@
+import { Controls, ControlsObserver } from './controls.js'
+import { Canvas, CanvasSizes } from './canvas.js'
 import { Snake } from './snake.js'
 import { Fruit } from './fruit.js'
-import { Canvas, CanvasSizes } from './canvas.js'
-import { Controls, ControlsObserver } from './controls.js'
 
 export interface CellPosition {
   x: number
@@ -24,6 +24,10 @@ export class Game implements ControlsObserver {
   canvas: Canvas = new Canvas({ cell: 25, columns: 21, rows: 21 })
   controls: Controls = new Controls()
   gameId: number | null = null
+  stats = {
+    current: 0,
+    best: 0,
+  }
 
   constructor() {
     // Set keymaps
@@ -47,8 +51,37 @@ export class Game implements ControlsObserver {
     this.printGame()
   }
 
+  get score(): number {
+    return this.stats.current
+  }
+
+  set score(score: number) {
+    const scoreElement = document.getElementById('current-score')!
+    const bestScoreElement = document.getElementById('best-score')!
+
+    // Update score
+    this.stats.current = score
+    if (score > this.stats.best) {
+      this.stats.best = score
+    }
+
+    // Print new score
+    scoreElement.innerText = score.toString()
+    bestScoreElement.innerText = this.stats.best.toString()
+  }
+
   printGame() {
     this.canvas.print(this.snake.position, this.fruit.position)
+  }
+
+  updateIndicator(turnOn: boolean) {
+    const indicator = document.getElementById('play-indicator')!
+
+    if (turnOn) {
+      indicator.classList.add('active')
+    } else {
+      indicator.classList.remove('active')
+    }
   }
 
   updateGame() {
@@ -58,8 +91,9 @@ export class Game implements ControlsObserver {
     this.snake.updatePosition(this.canvas.sizes, fruitCollected)
 
     // Update fruit position
-    if (fruitCollected || !this.fruit.position) {
+    if (fruitCollected) {
       this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
+      this.score += 1
     }
 
     // Check if lose the game
@@ -81,9 +115,11 @@ export class Game implements ControlsObserver {
     this.gameId = null
 
     // Reset all
+    this.updateIndicator(false)
     this.snake.reset(this.canvas.sizes)
     this.fruit.reset()
     this.printGame()
+    this.score = 0
 
     // Observe controls again
     this.controls.addObserver(this)
@@ -94,7 +130,9 @@ export class Game implements ControlsObserver {
     this.controls.removeObserver(this)
 
     // Start game
+    this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
     this.gameId = setInterval(this.updateGame.bind(this), 100)
+    this.updateIndicator(true)
   }
 }
 
