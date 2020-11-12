@@ -5,12 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snake Game 🐍</title>
     <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>Snake game 🐍</h1>
-    <button id="reset">reset</button>
-    <p id="score">score: 0</p>
-    <canvas id="game"></canvas>
+    <div class="gameboy">
+      <div class="gameboy__head">
+        <canvas class="display" id="game"></canvas>
+        <div class="play-indicator"></div>
+        <div class="game-stats">
+          <p class="game-stats__score">
+            Score
+            <span>0</span>
+          </p>
+          <p class="game-stats__score">
+            Best
+            <span>0</span>
+          </p>
+        </div>
+      </div>
+      <div class="gameboy__body">
+        <h1>Snake game</h1>
+        <div class="controls">
+          <div class="controls__center"></div>
+          <button class="controls__button controls__button--up"></button>
+          <button class="controls__button controls__button--left"></button>
+          <button class="controls__button controls__button--right"></button>
+          <button class="controls__button controls__button--bottom"></button>
+        </div>
+        <div class="extra-buttons">
+          <button
+            class="extra-buttons__button extra-buttons__button--a"
+            disabled
+          >
+            A
+          </button>
+          <button
+            class="extra-buttons__button extra-buttons__button--b"
+            disabled
+          >
+            B
+          </button>
+        </div>
+      </div>
+    </div>
     <script src="./build/game.js" type="module"></script>
   </body>
 </html>

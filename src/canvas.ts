@@ -10,7 +10,7 @@ export class Canvas {
   private canvas: HTMLCanvasElement
   private ctx: CanvasRenderingContext2D
   private colors = {
-    background: '#f5f5f5',
+    background: '#D1D3C4',
     fruit: '#F15152',
     snakeHead: '#368F8B',
     snakeBody: '#48A9A6',

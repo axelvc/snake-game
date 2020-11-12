@@ -1,0 +1,206 @@
+:root {
+  --padding-normal: 40px;
+  --padding-small: 30px;
+
+  --color-background: #ee9741;
+  --color-white: #d1d3c4;
+  --color-red: #f15152;
+  --color-red-dark: #af3131;
+  --color-purple: #464188;
+  --color-purple-dark: #302a49;
+  --color-purple-light: #5f4680;
+}
+
+/* -------------------- General -------------------- */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-background);
+  display: flex;
+  justify-content: center;
+  font-family: 'Press Start 2P';
+}
+
+button {
+  border: none;
+  font-family: inherit;
+}
+
+/* -------------------- Game -------------------- */
+.gameboy {
+  flex: 1;
+  max-width: 50vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: var(--color-purple);
+  padding: var(--padding-small);
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 450px) {
+  .gameboy {
+    margin: 50px;
+    border-radius: 10px 10px 80px 20px;
+    box-shadow: 40px 0px 0 0 var(--color-purple-dark),
+      0 10px 0 0 var(--color-purple-dark),
+      40px 10px 0 0 var(--color-purple-dark);
+  }
+}
+
+/* ---------- Display ---------- */
+.gameboy__head {
+  background: var(--color-purple-dark);
+  padding: var(--padding-normal);
+  border-radius: 5px 5px 20px 20px;
+  position: relative;
+  max-width: 50vh;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.display {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.play-indicator {
+  background: var(--color-white);
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: calc(50% - 5px);
+  left: calc(var(--padding-normal) / 2 - 5px);
+}
+.play-indicator.active {
+  background: var(--color-red);
+  box-shadow: 0 0 10px 5px var(--color-red);
+}
+
+.game-stats {
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  transform: translateX(-50%);
+  width: 30vh;
+  display: flex;
+  justify-content: space-evenly;
+}
+.game-stats__score {
+  font-size: 1.35vh;
+  text-align: center;
+  color: var(--color-white);
+}
+.game-stats__score span {
+  line-height: 2.5em;
+}
+
+/* ---------- Body ---------- */
+.gameboy__body {
+  display: grid;
+  grid-template: auto 1fr / 6fr 4fr;
+  grid-template-areas:
+    'title title'
+    'controls extra-buttons';
+  gap: 50px;
+}
+
+.gameboy__body h1 {
+  grid-area: title;
+  font-size: 3vh;
+  white-space: nowrap;
+  color: var(--color-purple-dark);
+  text-align: center;
+}
+
+.controls {
+  grid-area: controls;
+  width: 20vh;
+  height: 20vh;
+  max-height: 180px;
+  max-width: 180px;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  grid-template-areas:
+    '. up .'
+    'left center right'
+    '. bottom .';
+}
+
+.controls__button,
+.controls__center {
+  background: var(--color-purple-dark);
+  position: relative;
+  border-radius: 5px;
+}
+
+.controls__center {
+  grid-area: center;
+  border-radius: 0;
+  box-shadow: 6px 6px var(--color-purple-light);
+}
+.controls__center::before {
+  content: '';
+  border-radius: 2px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 25%;
+  background: var(--color-white);
+  box-shadow: 0 0 0 10px #2b2541;
+}
+
+.controls__button--up {
+  grid-area: up;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: 6px 0px var(--color-purple-light);
+}
+.controls__button--left {
+  grid-area: left;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: 0px 6px var(--color-purple-light);
+}
+.controls__button--right {
+  grid-area: right;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  box-shadow: 6px 6px var(--color-purple-light),
+    6px 0px var(--color-purple-light);
+}
+.controls__button--bottom {
+  grid-area: bottom;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: 6px 6px var(--color-purple-light),
+    0px 6px var(--color-purple-light);
+}
+
+.extra-buttons {
+  grid-area: extra-buttons;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+.extra-buttons__button {
+  background: var(--color-red);
+  display: block;
+  color: var(--color-purple-dark);
+  border-radius: 50%;
+  width: 7vh;
+  height: 7vh;
+  max-height: 60px;
+  max-width: 60px;
+  box-shadow: 4px 7px #af3131;
+}
+.extra-buttons__button--a {
+  margin-left: auto;
+}
+.extra-buttons__button--b {
+  margin-right: auto;
+}
