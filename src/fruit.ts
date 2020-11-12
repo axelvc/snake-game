@@ -9,6 +9,8 @@ export class Fruit implements GameElement {
   }
 
   inSnakePosition(snakePositions: CellPosition[]) {
+    if (!this.position) return false
+
     return snakePositions.some((cell) => compareCells(cell, this.position!))
   }
 

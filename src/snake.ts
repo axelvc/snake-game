@@ -42,24 +42,22 @@ export class Snake implements GameElement, ControlsObserver {
     return { x, y }
   }
 
-  checkSelfCollision(): never | void {
+  private checkSelfCollision(): boolean {
     const head = this.position[0]
 
-    const collision = this.position
-      .slice(1)
-      .some((cell) => compareCells(cell, head))
-
-    if (collision) {
-      throw new Error('Snake crashed into himself')
-    }
+    return this.position.slice(1).some((cell) => compareCells(cell, head))
   }
 
-  checkRangeCollision({ cell, columns, rows }: CanvasSizes): never | void {
+  private checkRangeCollision({ cell, columns, rows }: CanvasSizes): boolean {
     const head = this.position[0]
     const limits = [-cell, columns * cell, rows * cell]
 
-    if (limits.includes(head.x) || limits.includes(head.y)) {
-      throw new Error('Snake crashed with the wall')
+    return limits.includes(head.x) || limits.includes(head.y)
+  }
+
+  onDirectionChange(direction: keyDirection) {
+    if (this.position.length === 1 || !this.isStepBack(direction)) {
+      this.direction = direction
     }
   }
 
@@ -81,14 +79,11 @@ export class Snake implements GameElement, ControlsObserver {
     }
   }
 
-  onDirectionChange(direction: keyDirection) {
-    if (this.position.length === 1 || !this.isStepBack(direction)) {
-      this.direction = direction
-    }
+  checkCollision(sizes: CanvasSizes): boolean {
+    return this.checkSelfCollision() || this.checkRangeCollision(sizes)
   }
 
-  checkCollision(sizes: CanvasSizes): never | void {
-    this.checkSelfCollision()
-    this.checkRangeCollision(sizes)
+  isFull(sizs: CanvasSizes) {
+    return sizs.columns * sizs.rows === this.position.length
   }
 }

@@ -44,33 +44,38 @@ export class Game implements ControlsObserver {
     this.snake.reset(this.canvas.sizes)
     this.fruit.reset()
 
-    // Print canvas
+    this.printGame()
+  }
+
+  printGame() {
     this.canvas.print(this.snake.position, this.fruit.position)
   }
 
   updateGame() {
     const fruitCollected = this.fruit.inSnakePosition(this.snake.position)
 
+    // Update snake
     this.snake.updatePosition(this.canvas.sizes, fruitCollected)
 
-    try {
-      this.snake.checkCollision(this.canvas.sizes)
-    } catch {
-      this.stop()
-    }
-
-    if (this.canvas.isFull(this.snake.position.length)) {
-      this.stop()
-    }
-
-    if (fruitCollected) {
+    // Update fruit position
+    if (fruitCollected || !this.fruit.position) {
       this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
     }
 
-    this.canvas.print(this.snake.position, this.fruit.position)
+    // Check if lose the game
+    if (this.snake.checkCollision(this.canvas.sizes)) {
+      this.reset()
+    }
+
+    // Check if win the game
+    if (this.snake.isFull(this.canvas.sizes)) {
+      this.reset()
+    }
+
+    this.printGame()
   }
 
-  stop() {
+  reset() {
     // Stop game
     clearInterval(this.gameId!)
     this.gameId = null
@@ -78,18 +83,18 @@ export class Game implements ControlsObserver {
     // Reset all
     this.snake.reset(this.canvas.sizes)
     this.fruit.reset()
-    this.canvas.print(this.snake.position, this.fruit.position)
+    this.printGame()
+
+    // Observe controls again
     this.controls.addObserver(this)
   }
 
-  start() {
-    this.fruit.updatePosition(this.canvas.sizes, this.snake.position)
-    this.gameId = setInterval(this.updateGame.bind(this), 100)
-  }
-
   onDirectionChange() {
+    // Unobserve controls
     this.controls.removeObserver(this)
-    this.start()
+
+    // Start game
+    this.gameId = setInterval(this.updateGame.bind(this), 100)
   }
 }
 

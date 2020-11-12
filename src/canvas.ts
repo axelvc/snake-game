@@ -60,8 +60,4 @@ export class Canvas {
     this.drawFruit(fruitPosition)
     this.drawSnake(snakePosition)
   }
-
-  isFull(cellsCount: number) {
-    return this.sizes.columns * this.sizes.rows === cellsCount
-  }
 }
