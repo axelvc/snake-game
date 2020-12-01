@@ -29,7 +29,6 @@ button {
 /* -------------------- Game -------------------- */
 .gameboy {
   flex: 1;
-  max-width: 50vh;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -38,9 +37,10 @@ button {
   box-sizing: border-box;
 }
 
-@media screen and (min-width: 450px) {
+@media screen and (min-width: 426px) {
   .gameboy {
     margin: 50px;
+    max-width: 50vh;
     border-radius: 10px 10px 80px 20px;
     box-shadow: 40px 0px 0 0 var(--color-purple-dark),
       0 10px 0 0 var(--color-purple-dark),
